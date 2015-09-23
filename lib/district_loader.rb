@@ -8,6 +8,4 @@ class DistrictLoader
     file = File.read(filepath)
     @data = JSON.parse(file, :symbolize_names => true)
   end
-
-
 end
