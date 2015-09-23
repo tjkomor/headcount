@@ -79,5 +79,4 @@ class Enrollment
   def remediation_in_year(year)
     remediation_by_year.fetch(year.to_s.to_sym)
   end
-
 end

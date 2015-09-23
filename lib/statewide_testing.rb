@@ -1,9 +1,14 @@
-class StatewideTesting
+module Errors
 
-def initialize(data)
-  @data = data
+class UnknownDataError < StandardError
+end
+class KeyError < StandardError
 end
 
+end
+
+include Errors
+class StatewideTesting
   attr_accessor :data
 
   def initialize(data)
@@ -12,14 +17,14 @@ end
 
   def proficient_by_grade(grade)
     data_by_year = @data.fetch(:by_subject_year_and_grade)
-    if grade == 3 || 8
+    if grade == 3 || grade == 8
       data_by_year = data_by_year.select { |k| k[:grade] == grade }
                                  .group_by { |data| data[:year] }
       @output = {}
       format_proficiency_hash(data_by_year)
       @output
     else
-      raise UNKNOWNGRADEERROR
+      raise UnknownDataError
     end
   end
 
@@ -38,7 +43,7 @@ end
   end
 
   def proficient_for_subject_in_year(subject, year)
-    if subject == :reading || :math || :reading
+    if subject == :reading || subject == :math || subject == :reading
       three = proficient_by_grade(3)
       eight = proficient_by_grade(8)
       third = three.fetch(year)
@@ -47,17 +52,21 @@ end
       y = third.fetch(subject)
       (x + y) / 2
     else
-      raise UNKNOWNDATAERROR
+      raise UnknownDataError
     end
   end
 
   def proficient_by_race_or_ethnicity(race)
     race = race.to_s
-    results = Hash.new
-    data_by_race = @data.fetch(:by_subject_year_and_race)
-                        .select { |k| k[:race] == race }
-    find_subject_by_race(data_by_race)
-    format_race_and_ethnicity_hash(data_by_race, results)
+      results = Hash.new
+      data_by_race = @data.fetch(:by_subject_year_and_race)
+                          .select { |k| k[:race] == race }
+    if data_by_race.nil? == false
+      find_subject_by_race(data_by_race)
+      format_race_and_ethnicity_hash(data_by_race, results)
+    else
+      raise UnknownDataError
+    end
   end
 
   def find_subject_by_race(data_by_race)
@@ -83,6 +92,4 @@ end
     data_by_race = proficient_by_race_or_ethnicity(race)
     data_by_race[year][subject]
   end
-
-
 end
