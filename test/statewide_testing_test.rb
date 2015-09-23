@@ -23,6 +23,11 @@ class StatewideTestingTest < Minitest::Test
                          2012=>{:math=>0.681, :writing=>0.738, :reading=>0.833},
                          2013=>{:math=>0.661, :reading=>0.852, :writing=>0.75},
                          2014=>{:math=>0.684, :reading=>0.827, :writing=>0.747}}
+
+@subject_by_race_results = {2011=>{:math=>0.0, :reading=>0.0, :writing=>0.0},
+                            2012=>{:math=>0.0, :reading=>0.0, :writing=>0.0},
+                            2013=>{:math=>0.0, :reading=>0.0, :writing=>0.0},
+                            2014=>{:math=>0.0, :reading=>0.0, :writing=>0.0}}
   end
 
   def test_it_can_find_proficiency_by_grade_for_a_district
@@ -34,12 +39,12 @@ class StatewideTestingTest < Minitest::Test
     assert_equal @eighth_grade_results, district.statewide_testing.proficient_by_grade(8)
   end
 
-  # def test_it_can_find_proficiency_by_race_or_ethnicity
-  #   dr = DistrictRepository.from_json(data_dir)
-  #   district = dr.find_by_name('WOODLAND PARK RE-2')
-  #   assert_equal "", district.statewide_testing.proficient_by_race_or_ethnicity(:asian)
-  #
-  # end
+  def test_it_can_find_proficiency_by_race_or_ethnicity
+    dr = DistrictRepository.from_json(data_dir)
+    district = dr.find_by_name('WOODLAND PARK RE-2')
+    assert_equal @subject_by_race_results, district.statewide_testing.proficient_by_race_or_ethnicity(:asian)
+
+  end
 
   def test_it_can_find_proficient_for_subject_by_grade_in_a_year
     dr = DistrictRepository.from_json(data_dir)
@@ -51,6 +56,12 @@ class StatewideTestingTest < Minitest::Test
     dr = DistrictRepository.from_json(data_dir)
     district = dr.find_by_name('ACADEMY 20')
     assert_equal 0.736, district.statewide_testing.proficient_for_subject_in_year(:math, 2011)
+  end
+
+  def test_it_can_find_subject_by_race_in_year
+    dr = DistrictRepository.from_json(data_dir)
+    district = dr.find_by_name('ACADEMY 20')
+    assert_equal 0.816, district.statewide_testing.proficient_for_subject_by_race_in_year(:math, :asian, 2011)
   end
 
 end

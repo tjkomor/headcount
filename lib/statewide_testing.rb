@@ -43,35 +43,40 @@ class StatewideTesting
       (x + y) / 2
     else
       raise UNKNOWNDATAERROR
+    end
   end
-end
 
-  # def proficient_by_race_or_ethnicity(race)
-  #   race = race.to_s
-  #   data_by_race = @data.fetch(:by_subject_year_and_race)
-  #                       .select { |k| k[:race] == race }
-  #   find_subject_by_race(data_by_race)
-  #   format_race_and_ethnicity_hash(data_by_race)
-  # end
-  #
-  # def find_subject_by_race(data_by_race)
-  #   @output = {}
-  #   @output[:math]    = data_by_race.select { |k| k[:subject] == "math"}
-  #   @output[:reading] = data_by_race.select { |k| k[:subject] == "reading"}
-  #   @output[:writing] = data_by_race.select { |k| k[:subject] == "writing"}
-  # end
-  #
-  # def format_race_and_ethnicity_hash(data_by_race)
-  #   @results = {}
-  #   @output.each do |key, rel|
-  #     rel.each do |k|
-  #       year = k.fetch(:year)
-  #       year = year.to_i
-  #       require "pry";binding.pry
-  #       @results[year] = k[:proficiency].to_f
-  #     end
-  #     require "pry";binding.pry
-  #   end
-  # end
+  def proficient_by_race_or_ethnicity(race)
+    race = race.to_s
+    results = Hash.new
+    data_by_race = @data.fetch(:by_subject_year_and_race)
+                        .select { |k| k[:race] == race }
+    find_subject_by_race(data_by_race)
+    format_race_and_ethnicity_hash(data_by_race, results)
+  end
+
+  def find_subject_by_race(data_by_race)
+    @output = {}
+    @output[:math]    = data_by_race.select { |k| k[:subject] == "math"}
+    @output[:reading] = data_by_race.select { |k| k[:subject] == "reading"}
+    @output[:writing] = data_by_race.select { |k| k[:subject] == "writing"}
+  end
+
+  def format_race_and_ethnicity_hash(data_by_race, results)
+    @output.each do |key, rel|
+      rel.each do |k|
+        year = k.fetch(:year)
+        subject = key
+        results[year] ||= Hash.new
+        results[year][subject] = k[:proficiency].to_f
+      end
+    end
+    results
+  end
+
+  def proficient_for_subject_by_race_in_year(subject, race, year)
+    data_by_race = proficient_by_race_or_ethnicity(race)
+    data_by_race[year][subject]
+  end
 
 end
