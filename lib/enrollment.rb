@@ -5,7 +5,7 @@ class Enrollment
     @data = data.fetch(:enrollment)
   end
 
-  def in_year(year)
+  def participation_in_year(year)
     @data[:participation_by_year][year.to_s.to_sym]
   end
 
