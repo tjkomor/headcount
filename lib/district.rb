@@ -13,6 +13,10 @@ class District
   end
 
   def name
-    @name.to_s.upcase
+    if @name.respond_to?(:to_s)
+      @name = @name.to_s.upcase
+    else
+      @name = @name
+    end
   end
 end

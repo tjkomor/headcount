@@ -21,6 +21,14 @@ class DistrictRepository
     end
   end
 
+  # def name
+  #   if @districts.key.class == String
+  #     @name = @districts.key
+  #   else
+  #     @name = @districts.key.to_s
+  #   end
+  # end
+
   def find_all_matching(name)
     a = []
     name = name.upcase.to_sym
