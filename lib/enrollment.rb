@@ -30,6 +30,8 @@ class Enrollment
     dropout.each do |blk|
       if blk[:year] == year && blk[:category] == 'all'
           return blk[:rate]
+        else
+          nil
       end
     end
   end
