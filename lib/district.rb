@@ -5,5 +5,4 @@ class District
     @name = name
     @enrollment = Enrollment.new(data)
   end
-
 end
