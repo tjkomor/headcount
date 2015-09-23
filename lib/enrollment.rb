@@ -51,6 +51,14 @@ class Enrollment
     participation_by_race_or_ethnicity.fetch(year)
   end
 
+  def special_education_by_year
+    @data[:special_education_by_year]
+  end
+
+  def special_education_in_year(year)
+    special_education_by_year.fetch(year.to_s.to_sym)
+  end
+
 
   # def dropout_rate_by_gender_in_year(year)
   #     dropouts = @data[:dropout_rates]
