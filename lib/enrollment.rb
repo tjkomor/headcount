@@ -29,7 +29,7 @@ class Enrollment
     dropout = @data[:dropout_rates]
     dropout.each do |blk|
       if blk[:year] == year && blk[:category] == 'all'
-          blk[:rate]
+          return blk[:rate]
       end
     end
   end

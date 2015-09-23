@@ -23,7 +23,7 @@ class EnrollmentTest < Minitest::Test
   def test_it_can_find_dropout_rate_in_year
     dr = DistrictRepository.from_json(data_dir)
     district = dr.find_by_name('WOODLAND PARK RE-2')
-    assert_equal .013, district.enrollment.dropout_rate_in_year(2010)
+    assert_equal '', district.enrollment.dropout_rate_in_year(2010)
   end
 
   def test_it_can_find_dropout_rate_by_gender_in_year
