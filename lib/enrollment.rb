@@ -1,14 +1,15 @@
 class Enrollment
   attr_accessor :data
+
   def initialize(data)
-    @data = data
+    @data = data.fetch(:enrollment)
   end
 
   def in_year(year)
-    @data[:enrollment][:participation_by_year][year.to_s.to_sym]
+    @data[:participation_by_year][year.to_s.to_sym]
   end
 
   def graduation_in_year(year)
-    @data[:enrollment][:graduation_rate_by_year][year.to_s.to_sym]
+    @data[:graduation_rate_by_year][year.to_s.to_sym]
   end
 end
