@@ -27,7 +27,6 @@ class EnrollmentTest < Minitest::Test
   end
 
   def test_it_can_find_dropout_rate_by_gender_in_year
-    skip
     dr = DistrictRepository.from_json(data_dir)
     district = dr.find_by_name('WOODLAND PARK RE-2')
     assert_equal '', district.enrollment.dropout_rate_by_gender_in_year(2010)
@@ -40,14 +39,13 @@ class EnrollmentTest < Minitest::Test
   end
 
   def test_it_can_find_hash_of_online_particiaption
-    skip
     dr = DistrictRepository.from_json(data_dir)
     district = dr.find_by_name('WOODLAND PARK RE-2')
-    assert_equal '', district.enrollment.online_participation_by_year
+    expected = {2011=>77, 2012=>42, 2013=>37}
+    assert_equal expected, district.enrollment.online_participation_by_year
   end
 
   def test_it_can_find_participation_by_year
-    skip
     dr = DistrictRepository.from_json(data_dir)
     district = dr.find_by_name('WOODLAND PARK RE-2')
     assert_equal '', district.enrollment.online_participation_in_year
@@ -56,7 +54,8 @@ class EnrollmentTest < Minitest::Test
   def test_it_can_find_hash_by_race_or_ethnicity
     dr = DistrictRepository.from_json(data_dir)
     district = dr.find_by_name('WOODLAND PARK RE-2')
-    assert_equal '', district.enrollment.participation_by_race_or_ethnicity(:asian)
+    expected = {2007=>0.01, 2008=>0.014, 2009=>0.013, 2010=>0.01, 2011=>0.005, 2012=>0.006, 2013=>0.007, 2014=>0.007}
+    assert_equal expected, district.enrollment.participation_by_race_or_ethnicity(:asian)
   end
 
   def test_it_can_find_by_race_in_year
@@ -68,7 +67,8 @@ class EnrollmentTest < Minitest::Test
   def test_it_can_find_special_education_by_year
     dr = DistrictRepository.from_json(data_dir)
     district = dr.find_by_name('WOODLAND PARK RE-2')
-    assert_equal '', district.enrollment.special_education_by_year
+    expected = {2009=>0.094, 2011=>0.077, 2012=>0.08, 2013=>0.081, 2010=>0.082, 2014=>0.085}
+    assert_equal expected, district.enrollment.special_education_by_year
   end
 
   def test_it_can_find_special_education_in_year
@@ -80,7 +80,8 @@ class EnrollmentTest < Minitest::Test
   def test_it_can_find_remediation_by_year
     dr = DistrictRepository.from_json(data_dir)
     district = dr.find_by_name('WOODLAND PARK RE-2')
-    assert_equal '', district.enrollment.remediation_by_year
+    expected = {2011=>0.348, 2010=>0.415, 2009=>0.357}
+    assert_equal expected, district.enrollment.remediation_by_year
   end
 
   def test_it_can_find_remediation_in_year
