@@ -1,4 +1,9 @@
 class StatewideTesting
+
+def initialize(data)
+  @data = data
+end
+
   attr_accessor :data
 
   def initialize(data)
@@ -78,5 +83,6 @@ class StatewideTesting
     data_by_race = proficient_by_race_or_ethnicity(race)
     data_by_race[year][subject]
   end
+
 
 end

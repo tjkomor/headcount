@@ -16,4 +16,8 @@ class DistrictRepository
   def find_by_name(name)
     @districts.fetch(name.downcase.to_sym)
   end
+
+  def proficient_for_subject_by_grade_in_year(subject, grade, year)
+
+  end
 end
