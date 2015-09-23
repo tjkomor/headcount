@@ -18,7 +18,8 @@ class Enrollment
   end
 
   def kindergarten_participation_by_year
-    @data[:kindergarten_participation_by_year]
+    hash = @data[:kindergarten_participation_by_year]
+    hash.map { |key, value| [key.to_s.to_i, value] }.to_h
   end
 
   def kindergarten_participation_in_year(year)

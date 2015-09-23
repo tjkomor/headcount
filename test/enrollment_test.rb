@@ -90,9 +90,10 @@ class EnrollmentTest < Minitest::Test
   end
 
   def test_it_can_find_kindergarten_participation_by_year
-    dr = DistrictRepository.from_json(data_dir)
+    dr       = DistrictRepository.from_json(data_dir)
     district = dr.find_by_name('WOODLAND PARK RE-2')
-    assert_equal '', district.enrollment.kindergarten_participation_by_year
+    expected = {2007 => 0, 2006 => 0, 2005 => 0.005, 2004 => 0, 2008 => 0, 2009 => 1, 2010 => 1, 2011 => 1, 2012 => 1, 2013 => 1, 2014 => 1}
+    assert_equal expected, district.enrollment.kindergarten_participation_by_year
   end
 
   def test_it_can_find_kindergarten_participation_in_year
