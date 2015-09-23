@@ -41,8 +41,29 @@ class EnrollmentTest < Minitest::Test
   end
 
   def test_it_can_find_hash_of_online_particiaption
+    skip
     dr = DistrictRepository.from_json(data_dir)
     district = dr.find_by_name('WOODLAND PARK RE-2')
-    assert_equal {:"2011"=>77, :"2012"=>42, :"2013"=>37}, district.enrollment.online_participation_by_year
+    assert_equal '', district.enrollment.online_participation_by_year
   end
+
+  def test_it_can_find_participation_by_year
+    skip
+    dr = DistrictRepository.from_json(data_dir)
+    district = dr.find_by_name('WOODLAND PARK RE-2')
+    assert_equal '', district.enrollment.online_participation_in_year
+  end
+
+  def test_it_can_find_hash_by_race_or_ethnicity
+    dr = DistrictRepository.from_json(data_dir)
+    district = dr.find_by_name('WOODLAND PARK RE-2')
+    assert_equal '', district.enrollment.participation_by_race_or_ethnicity(:asian)
+  end
+
+  def test_it_can_find_by_race_in_year
+    dr = DistrictRepository.from_json(data_dir)
+    district = dr.find_by_name('WOODLAND PARK RE-2')
+    assert_equal 0.01, district.enrollment.participation_by_race_or_ethnicity_in_year(2010)
+  end
+
 end
