@@ -2,7 +2,7 @@ require './lib/district_repository'
 require './lib/district'
 require './lib/statewide_testing'
 
-class DistictLoaderTest < Minitest::Test
+class StatewideTestingTest < Minitest::Test
   def data_dir
     File.expand_path '../data', __dir__
   end
@@ -33,4 +33,24 @@ class DistictLoaderTest < Minitest::Test
     district = dr.find_by_name('ACADEMY 20')
     assert_equal @eighth_grade_results, district.statewide_testing.proficient_by_grade(8)
   end
+
+  # def test_it_can_find_proficiency_by_race_or_ethnicity
+  #   dr = DistrictRepository.from_json(data_dir)
+  #   district = dr.find_by_name('WOODLAND PARK RE-2')
+  #   assert_equal "", district.statewide_testing.proficient_by_race_or_ethnicity(:asian)
+  #
+  # end
+
+  def test_it_can_find_proficient_for_subject_by_grade_in_a_year
+    dr = DistrictRepository.from_json(data_dir)
+    district = dr.find_by_name('WOODLAND PARK RE-2')
+    assert_equal 0.708, district.statewide_testing.proficient_for_subject_by_grade_in_year(:math, 3, 2011)
+  end
+
+  def test_it_can_find_proficiency_for_subject_in_a_year
+    dr = DistrictRepository.from_json(data_dir)
+    district = dr.find_by_name('ACADEMY 20')
+    assert_equal 0.736, district.statewide_testing.proficient_for_subject_in_year(:math, 2011)
+  end
+
 end

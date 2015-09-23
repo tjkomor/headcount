@@ -14,7 +14,7 @@ class StatewideTesting
       format_proficiency_hash(data_by_year)
       @output
     else
-      "UNKNOWNGRADEERROR"
+      raise UNKNOWNGRADEERROR
     end
   end
 
@@ -25,4 +25,53 @@ class StatewideTesting
       @output[k.to_i] = scores[0].merge(scores[1]).merge(scores[2])
     end
   end
+
+  def proficient_for_subject_by_grade_in_year(subject, grade, year)
+    data_by_grade = proficient_by_grade(grade)
+    value_year = data_by_grade.fetch(year)
+    value_year.fetch(subject)
+  end
+
+  def proficient_for_subject_in_year(subject, year)
+    if subject == :reading || :math || :reading
+      three = proficient_by_grade(3)
+      eight = proficient_by_grade(8)
+      third = three.fetch(year)
+      eighth = eight.fetch(year)
+      x = eighth.fetch(subject)
+      y = third.fetch(subject)
+      (x + y) / 2
+    else
+      raise UNKNOWNDATAERROR
+  end
+end
+
+  # def proficient_by_race_or_ethnicity(race)
+  #   race = race.to_s
+  #   data_by_race = @data.fetch(:by_subject_year_and_race)
+  #                       .select { |k| k[:race] == race }
+  #   find_subject_by_race(data_by_race)
+  #   format_race_and_ethnicity_hash(data_by_race)
+  # end
+  #
+  # def find_subject_by_race(data_by_race)
+  #   @output = {}
+  #   @output[:math]    = data_by_race.select { |k| k[:subject] == "math"}
+  #   @output[:reading] = data_by_race.select { |k| k[:subject] == "reading"}
+  #   @output[:writing] = data_by_race.select { |k| k[:subject] == "writing"}
+  # end
+  #
+  # def format_race_and_ethnicity_hash(data_by_race)
+  #   @results = {}
+  #   @output.each do |key, rel|
+  #     rel.each do |k|
+  #       year = k.fetch(:year)
+  #       year = year.to_i
+  #       require "pry";binding.pry
+  #       @results[year] = k[:proficiency].to_f
+  #     end
+  #     require "pry";binding.pry
+  #   end
+  # end
+
 end
