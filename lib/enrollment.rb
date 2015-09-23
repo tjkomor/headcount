@@ -17,8 +17,21 @@ class Enrollment
     @data[:graduation_rate_by_year][year.to_s.to_sym]
   end
 
+  def kindergarten_participation_by_year
+    @data[:kindergarten_participation_by_year]
+  end
+
+  def kindergarten_participation_in_year(year)
+    kindergarten_participation_by_year.fetch(year.to_s.to_sym)
+  end
+
   def dropout_rate_in_year(year)
-    dropouts = @data[:dropout_rates]
+    dropout = @data[:dropout_rates]
+    dropout.each do |blk|
+      if blk[:year] == year && blk[:category] == 'all'
+          blk[:rate]
+      end
+    end
   end
 
   def online_participation_by_year
@@ -51,9 +64,20 @@ class Enrollment
     participation_by_race_or_ethnicity.fetch(year)
   end
 
+  def special_education_by_year
+    @data[:special_education_by_year]
+  end
 
-  # def dropout_rate_by_gender_in_year(year)
-  #     dropouts = @data[:dropout_rates]
-  #     dropouts.fetch(year)
-  # end
+  def special_education_in_year(year)
+    special_education_by_year.fetch(year.to_s.to_sym)
+  end
+
+  def remediation_by_year
+    @data[:remediation_by_year]
+  end
+
+  def remediation_in_year(year)
+    remediation_by_year.fetch(year.to_s.to_sym)
+  end
+
 end
