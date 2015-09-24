@@ -16,7 +16,7 @@ class Enrollment
   end
 
   def participation_in_year(year)
-    @data[:participation_by_year][year.to_s.to_sym]
+    @data[:participation_by_year][year]
   end
 
   def participation_by_year
@@ -30,7 +30,7 @@ class Enrollment
   end
 
   def graduation_rate_in_year(year)
-    @data[:graduation_rate_by_year][year.to_s.to_sym]
+    @data[:graduation_rate_by_year][year]
   end
 
   def graduation_rate_by_year
@@ -80,7 +80,7 @@ class Enrollment
 
   def online_participation_in_year(year)
     participation = @data[:online_participation_by_year]
-    participation.fetch(year.to_s.to_sym, nil)
+    participation.fetch(year, nil)
   end
 
   def participation_by_race_or_ethnicity(race)
@@ -115,7 +115,7 @@ class Enrollment
         end
       end
       result = races.zip(rates).to_h
-      result if result.any? 
+      result if result.any?
   end
 
   def dropout_rate_for_race_or_ethnicity_in_year(race, year)
