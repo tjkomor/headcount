@@ -1,3 +1,13 @@
+module Errors
+
+class UnknownRaceError < StandardError
+end
+class KeyError < StandardError
+end
+
+end
+
+include Errors
 class Enrollment
   attr_accessor :data
 
@@ -14,8 +24,17 @@ class Enrollment
     participation.map { |key, value| [key.to_s.to_i, value] }.to_h
   end
 
+  def known_races
+    [:white, :asian, :black, :hispanic, :two_or_more, :pacific_islander, :native_american,
+      :all_students, :female_students, :male_students]
+  end
+
   def graduation_rate_in_year(year)
     @data[:graduation_rate_by_year][year.to_s.to_sym]
+  end
+
+  def graduation_rate_by_year
+    @data[:graduation_rate_by_year].map { |key, value| [key.to_s.to_i, value] }.to_h
   end
 
   def kindergarten_participation_by_year
@@ -48,8 +67,8 @@ class Enrollment
       females = correct_year.select {|hash| hash[:category] == "female"}
       female_hash = females.first
       male_hash = males.first
-      final_hash[female_hash[:category]] = female_hash[:rate]
-      final_hash[male_hash[:category]] = male_hash[:rate]
+      final_hash[female_hash[:category].to_sym] = female_hash[:rate]
+      final_hash[male_hash[:category].to_sym] = male_hash[:rate]
       final_hash
     end
   end
@@ -65,18 +84,22 @@ class Enrollment
   end
 
   def participation_by_race_or_ethnicity(race)
-    all_years = []
-    year = []
-    rate = []
-    participation = @data[:participation_by_race_and_year]
-    participation.each do |blk|
-      if blk[:race] == race.to_s
-        all_years << blk
+    if !known_races.include?(race)
+      raise UnknownRaceError
+    else
+      all_years = []
+      year = []
+      rate = []
+      participation = @data[:participation_by_race_and_year]
+      participation.each do |blk|
+        if blk[:race] == race.to_s
+          all_years << blk
+        end
       end
     end
     all_years.each do |blk|
-       year << blk[:year]
-       rate << blk[:rate]
+      year << blk[:year]
+      rate << blk[:rate]
     end
     year.zip(rate).to_h
   end
@@ -92,15 +115,21 @@ class Enrollment
         end
       end
       result = races.zip(rates).to_h
-      result if result.any?
+      result if result.any? 
   end
 
   def dropout_rate_for_race_or_ethnicity_in_year(race, year)
-    string = race.to_s
-    data = @data[:dropout_rates]
-    years = data.select {|hash| hash[:year] == year}
-    results = years.select {|hash| hash[:category] == string}
-    results.first[:rate]
+    if !known_races.include?(race)
+      raise UnknownRaceError
+    elsif year > 2012 || year < 2011
+      nil
+    else
+      string = race.to_s
+      data = @data[:dropout_rates]
+      years = data.select {|hash| hash[:year] == year}
+      results = years.select {|hash| hash[:category] == string}
+      results.first[:rate]
+    end
   end
 
   def dropout_rate_by_race_in_year(year)
@@ -127,6 +156,22 @@ class Enrollment
       results[white.first[:category].to_sym] = white.first[:rate]
       results
     end
+  end
+
+  def dropout_rate_for_race_or_ethnicity(race)
+      if !known_races.include?(race)
+        raise UnknownRaceError
+      else
+        year = []
+        rates = []
+        @data[:dropout_rates].each do |hash|
+          if hash[:category] == race.to_s
+            year << hash[:year]
+            rates << hash[:rate]
+          end
+        end
+    end
+    result = year.zip(rates).to_h
   end
 
   def special_education_by_year

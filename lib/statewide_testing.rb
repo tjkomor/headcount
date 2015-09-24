@@ -15,6 +15,19 @@ class StatewideTesting
     @data = data.fetch(:statewide_testing)
   end
 
+  def known_races
+    [:white, :asian, :black, :hispanic, :two_or_more, :pacific_islander, :native_american,
+      :all_students, :female_students, :male_students]
+  end
+
+  def known_subjects
+    [:math, :writing, :reading]
+  end
+
+  def known_years
+    [2011,2012,2013,2014]
+  end
+
   def proficient_by_grade(grade)
     data_by_year = @data.fetch(:by_subject_year_and_grade)
     if (grade == 3) || (grade == 8)
@@ -41,12 +54,15 @@ class StatewideTesting
   end
 
   def proficient_for_subject_by_grade_in_year(subject, grade, year)
-    data_by_grade = proficient_by_grade(grade)
-    if !subject?(subject)
-      raise UnknownDataError
+    if known_subjects.include?(subject)
+      data_by_grade = proficient_by_grade(grade)
+      value_year = data_by_grade.select {|hash| hash == year}
+      if value_year.empty?
+        raise UnknownDataError
+      end
+      value_year.fetch(year).fetch(subject)
     else
-      value_year = data_by_grade.fetch(year, @unknown)
-      value_year.fetch(subject, @unknown)
+      raise UnknownDataError
     end
   end
 
@@ -67,24 +83,30 @@ class StatewideTesting
   end
 
   def proficient_for_subject_in_year(subject, year)
-    if subject?(subject)
-      three = proficient_by_grade(3)
-      eight = proficient_by_grade(8)
-      third = three.fetch(year)
-      eighth = eight.fetch(year)
-      x = eighth.fetch(subject)
-      y = third.fetch(subject)
-      (x + y) / 2
+    if known_subjects.include?(subject)
+      data_by_race = @data.fetch(:by_subject_year_and_race)
+      .select { |k| k[:race] == "all" }
+      .select { |k| k[:subject] == subject.to_s}
+      .select { |k| k[:year] == year}
+      if data_by_race.empty?
+        raise UnknownDataError
+      else
+        data_by_race.first.fetch(:proficiency)
+      end
     else
       raise UnknownDataError
     end
   end
 
   def proficient_by_race_or_ethnicity(race)
+    if !known_races.include?(race)
+      raise UnknownDataError
+    else
     race = race.to_s
       results = Hash.new
       data_by_race = @data.fetch(:by_subject_year_and_race)
                           .select { |k| k[:race] == race }
+                        end
     if !data_by_race.empty?
       find_subject_by_race(data_by_race)
       format_race_and_ethnicity_hash(data_by_race, results)
@@ -113,7 +135,17 @@ class StatewideTesting
   end
 
   def proficient_for_subject_by_race_in_year(subject, race, year)
-    data_by_race = proficient_by_race_or_ethnicity(race)
-    data_by_race[year][subject]
+    if valid?(subject, race, year)
+      data_by_race = proficient_by_race_or_ethnicity(race)
+        data_by_race[year][subject]
+      end
+  end
+
+  def valid?(subject, race, year)
+    if known_subjects.include?(subject) && known_races.include?(race) && known_years.include?(year)
+      true
+    else
+      raise UnknownDataError
+    end
   end
 end

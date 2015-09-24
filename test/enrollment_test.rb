@@ -125,4 +125,10 @@ class EnrollmentTest < Minitest::Test
     assert_equal expected, district.enrollment.dropout_rate_by_race_in_year(2011)
   end
 
+  def test_it_can_return_years_associated_with_race
+    dr = DistrictRepository.from_json(data_dir)
+    district = dr.find_by_name('WOODLAND PARK RE-2')
+    assert_equal '', district.enrollment.dropout_rate_for_race_or_ethnicity(:white)
+  end
+
 end
