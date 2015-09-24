@@ -92,16 +92,14 @@ class Enrollment
   end
 
   def participation_by_race_or_ethnicity_in_year(year)
-    races = []
-    rates = []
+    result = {}
     data = @data[:participation_by_race_and_year]
-      data.each do |hash|
+      data.map do |hash|
         if hash[:year] == year
-          races << hash[:race].to_sym
-          rates << hash[:rate]
+          result[hash[:race].to_sym] = hash[:rate]
         end
       end
-      result = races.zip(rates).to_h
+      result
       result if result.any?
   end
 
@@ -145,19 +143,17 @@ class Enrollment
   end
 
   def dropout_rate_for_race_or_ethnicity(race)
-      if !known_races.include?(race)
-        raise UnknownRaceError
-      else
-        year = []
-        rates = []
-        @data[:dropout_rates].each do |hash|
-          if hash[:category] == race.to_s
-            year << hash[:year]
-            rates << hash[:rate]
-          end
+    if !known_races.include?(race)
+      raise UnknownRaceError
+    else
+      results = {}
+      @data[:dropout_rates].map do |hash|
+        if hash[:category] == race.to_s
+          results[hash[:year]] = hash[:rate]
         end
+      end
     end
-    result = year.zip(rates).to_h
+    results
   end
 
   def special_education_by_year
