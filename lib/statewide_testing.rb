@@ -1,13 +1,6 @@
-module Errors
-
-class UnknownDataError < StandardError
-end
-class KeyError < StandardError
-end
-
-end
-
+require_relative 'custom_errors'
 include Errors
+
 class StatewideTesting
   attr_accessor :data
 

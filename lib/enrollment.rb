@@ -1,13 +1,6 @@
-module Errors
-
-class UnknownRaceError < StandardError
-end
-class KeyError < StandardError
-end
-
-end
-
+require_relative 'custom_errors'
 include Errors
+
 class Enrollment
   attr_accessor :data
 

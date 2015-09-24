@@ -1,11 +1,6 @@
-module Errors
-
-class KeyError < StandardError
-end
-
-end
-
+require_relative 'custom_errors'
 include Errors
+
 class EconomicProfile
   attr_accessor :data, :free_lunch
 
