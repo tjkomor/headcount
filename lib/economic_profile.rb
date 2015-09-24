@@ -11,14 +11,14 @@ class EconomicProfile
 
   def free_or_reduced_lunch_in_year(year)
     free_lunch = free_or_reduced_lunch_by_year
-    free_lunch.fetch(year.to_s.to_sym)
+    free_lunch = free_lunch.fetch(year.to_s.to_sym)
   end
 
   def school_aged_children_in_poverty
     @data.fetch(:school_aged_children_in_poverty_by_year)
   end
 
-  def school_aged_children_in_poverty_in_year(year)
+  def school_aged_children_in_poverty_by_year(year)
     poverty = school_aged_children_in_poverty
     poverty.fetch(year.to_s.to_sym)
   end

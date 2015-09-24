@@ -29,8 +29,8 @@ class Enrollment
 
   def dropout_rate_in_year(year)
     dropout = @data[:dropout_rates]
-    dropout.each do |blk|
-      if (blk[:year] == year) && (blk[:category] == 'all')
+    dropout.map do |blk|
+      if blk[:year] == year && blk[:category] == 'all'
           return blk[:rate]
       end
     end
@@ -107,26 +107,26 @@ class Enrollment
     if year > 2012 || year < 2011
       return nil
     else
-    results = {}
-    data = @data[:dropout_rates]
-    years = data.select {|hash| hash[:year] == year}
-    array = years.select {|hash| hash[:year] == year}
-    asian = array.select {|hash| hash[:category] == 'asian'}
-    black = array.select {|hash| hash[:category] == 'black'}
-    pacific_islander = array.select {|hash| hash[:category] == 'pacific_islander'}
-    hispanic = array.select {|hash| hash[:category] == 'hispanic'}
-    native_american = array.select {|hash| hash[:category] == 'native_american'}
-    two_or_more = array.select {|hash| hash[:category] == 'two_or_more'}
-    white = array.select {|hash| hash[:category] == 'white'}
-    results[asian.first[:category].to_sym] = asian.first[:rate]
-    results[black.first[:category].to_sym] = black.first[:rate]
-    results[pacific_islander.first[:category].to_sym] = pacific_islander.first[:rate]
-    results[hispanic.first[:category].to_sym] = hispanic.first[:rate]
-    results[native_american.first[:category].to_sym] = native_american.first[:rate]
-    results[two_or_more.first[:category].to_sym] = two_or_more.first[:rate]
-    results[white.first[:category].to_sym] = white.first[:rate]
-    results
-  end
+      results = {}
+      data = @data[:dropout_rates]
+      years = data.select {|hash| hash[:year] == year}
+      array = years.select {|hash| hash[:year] == year}
+      asian = array.select {|hash| hash[:category] == 'asian'}
+      black = array.select {|hash| hash[:category] == 'black'}
+      pacific_islander = array.select {|hash| hash[:category] == 'pacific_islander'}
+      hispanic = array.select {|hash| hash[:category] == 'hispanic'}
+      native_american = array.select {|hash| hash[:category] == 'native_american'}
+      two_or_more = array.select {|hash| hash[:category] == 'two_or_more'}
+      white = array.select {|hash| hash[:category] == 'white'}
+      results[asian.first[:category].to_sym] = asian.first[:rate]
+      results[black.first[:category].to_sym] = black.first[:rate]
+      results[pacific_islander.first[:category].to_sym] = pacific_islander.first[:rate]
+      results[hispanic.first[:category].to_sym] = hispanic.first[:rate]
+      results[native_american.first[:category].to_sym] = native_american.first[:rate]
+      results[two_or_more.first[:category].to_sym] = two_or_more.first[:rate]
+      results[white.first[:category].to_sym] = white.first[:rate]
+      results
+    end
   end
 
   def special_education_by_year
@@ -146,5 +146,4 @@ class Enrollment
   def remediation_in_year(year)
     remediation_by_year.fetch(year, nil)
   end
-
 end
