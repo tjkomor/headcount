@@ -112,6 +112,12 @@ class EnrollmentTest < Minitest::Test
     assert_equal 0, district.enrollment.dropout_rate_for_race_or_ethnicity_in_year(:asian, 2011)
   end
 
+  def test_it_raises_unknown_data_error_when_race_isnt_valid
+    dr = DistrictRepository.from_json(data_dir)
+    district = dr.find_by_name('WOODLAND PARK RE-2')
+    assert_equal UnknownRaceError, district.enrollment.dropout_rate_for_race_or_ethnicity(:pink)
+  end
+
   def test_it_can_find_races_and_dropout_rates_and_return_hash
     dr = DistrictRepository.from_json(data_dir)
     district = dr.find_by_name('WOODLAND PARK RE-2')

@@ -1,3 +1,9 @@
+module Errors
+class UnknownRaceError < StandardError
+end
+end
+
+include Errors
 class Enrollment
   attr_accessor :data
 
@@ -7,6 +13,10 @@ class Enrollment
 
   def participation_in_year(year)
     @data[:participation_by_year][year.to_s.to_sym]
+  end
+
+  def known_races
+    [:asian, :white, :hispanic, :black, :two_or_more, :pacific_islander]
   end
 
   def participation_by_year
@@ -96,11 +106,15 @@ class Enrollment
   end
 
   def dropout_rate_for_race_or_ethnicity_in_year(race, year)
+    if year > 2012 || year < 2011
+      return nil
+    else
     string = race.to_s
     data = @data[:dropout_rates]
     years = data.select {|hash| hash[:year] == year}
     results = years.select {|hash| hash[:category] == string}
     results.first[:rate]
+  end
   end
 
   def dropout_rate_by_race_in_year(year)
@@ -127,6 +141,15 @@ class Enrollment
       results[white.first[:category].to_sym] = white.first[:rate]
       results
     end
+  end
+
+  def dropout_rate_for_race_or_ethnicity(race)
+    known_races.each do |races|
+      if races != race
+        raise UnknownRaceError
+      end
+    end
+
   end
 
   def special_education_by_year
