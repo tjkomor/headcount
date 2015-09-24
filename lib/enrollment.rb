@@ -80,21 +80,15 @@ class Enrollment
     if !known_races.include?(race)
       raise UnknownRaceError
     else
-      all_years = []
-      year = []
-      rate = []
+      all_years = {}
       participation = @data[:participation_by_race_and_year]
-      participation.each do |blk|
-        if blk[:race] == race.to_s
-          all_years << blk
+      participation.each do |race_data|
+        if race_data[:race] == race.to_s
+          all_years[race_data[:year]] = race_data[:rate]
         end
       end
+      all_years
     end
-    all_years.each do |blk|
-      year << blk[:year]
-      rate << blk[:rate]
-    end
-    year.zip(rate).to_h
   end
 
   def participation_by_race_or_ethnicity_in_year(year)
@@ -117,10 +111,9 @@ class Enrollment
     elsif year > 2012 || year < 2011
       nil
     else
-      string = race.to_s
       data = @data[:dropout_rates]
-      years = data.select {|hash| hash[:year] == year}
-      results = years.select {|hash| hash[:category] == string}
+      years = data.select { |hash| hash[:year] == year }
+      results = years.select { |hash| hash[:category] == race.to_s }
       results.first[:rate]
     end
   end
@@ -131,15 +124,15 @@ class Enrollment
     else
       results = {}
       data = @data[:dropout_rates]
-      years = data.select {|hash| hash[:year] == year}
-      array = years.select {|hash| hash[:year] == year}
-      asian = array.select {|hash| hash[:category] == 'asian'}
-      black = array.select {|hash| hash[:category] == 'black'}
-      pacific_islander = array.select {|hash| hash[:category] == 'pacific_islander'}
-      hispanic = array.select {|hash| hash[:category] == 'hispanic'}
-      native_american = array.select {|hash| hash[:category] == 'native_american'}
-      two_or_more = array.select {|hash| hash[:category] == 'two_or_more'}
-      white = array.select {|hash| hash[:category] == 'white'}
+      years = data.select { |hash| hash[:year] == year }
+      array = years.select { |hash| hash[:year] == year}
+      asian = array.select { |hash| hash[:category] == 'asian' }
+      black = array.select { |hash| hash[:category] == 'black' }
+      pacific_islander = array.select { |hash| hash[:category] == 'pacific_islander' }
+      hispanic = array.select { |hash| hash[:category] == 'hispanic' }
+      native_american = array.select { |hash| hash[:category] == 'native_american' }
+      two_or_more = array.select { |hash| hash[:category] == 'two_or_more' }
+      white = array.select { |hash| hash[:category] == 'white' }
       results[asian.first[:category].to_sym] = asian.first[:rate]
       results[black.first[:category].to_sym] = black.first[:rate]
       results[pacific_islander.first[:category].to_sym] = pacific_islander.first[:rate]
