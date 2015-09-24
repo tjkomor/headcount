@@ -39,8 +39,4 @@ class DistrictRepository
     end
     a
   end
-
-  def proficient_for_subject_by_grade_in_year(subject, grade, year)
-
-  end
 end

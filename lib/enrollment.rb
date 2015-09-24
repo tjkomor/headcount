@@ -29,11 +29,9 @@ class Enrollment
 
   def dropout_rate_in_year(year)
     dropout = @data[:dropout_rates]
-    dropout.each do |blk|
-      if (blk[:year] == year) && (blk[:category] == 'all')
+    dropout.map do |blk|
+      if blk[:year] == year && blk[:category] == 'all'
           return blk[:rate]
-        else
-          nil
       end
     end
   end
@@ -66,7 +64,16 @@ class Enrollment
   end
 
   def participation_by_race_or_ethnicity_in_year(year)
-    participation_by_race_or_ethnicity.fetch(year)
+    races = []
+    rates = []
+    data = @data[:participation_by_race_and_year]
+    data.each do |block|
+      if block[:year] == year
+        races << block[:race]
+        rates << block[:rate]
+      end
+    end
+    races.zip(rates).to_h
   end
 
   def special_education_by_year
@@ -84,6 +91,6 @@ class Enrollment
   end
 
   def remediation_in_year(year)
-    remediation_by_year.fetch(year.to_s.to_sym)
+    remediation_by_year.fetch(year)
   end
 end
