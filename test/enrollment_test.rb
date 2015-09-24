@@ -14,6 +14,13 @@ class EnrollmentTest < Minitest::Test
     assert_equal 2752, district.enrollment.participation_in_year(2010)
   end
 
+  def test_it_knows_the_known_races
+    dr = DistrictRepository.from_json(data_dir)
+    district = dr.find_by_name('WOODLAND PARK RE-2')
+    assert_equal [:white, :asian, :black, :hispanic, :two_or_more, :pacific_islander, :native_american,
+      :all_students, :female_students, :male_students], district.enrollment.known_races
+  end
+
   def test_it_can_find_graduation_rate_in_year
     dr = DistrictRepository.from_json(data_dir)
     district = dr.find_by_name('WOODLAND PARK RE-2')
@@ -56,7 +63,8 @@ class EnrollmentTest < Minitest::Test
   def test_it_can_return_races_with_rates
     dr = DistrictRepository.from_json(data_dir)
     district = dr.find_by_name('WOODLAND PARK RE-2')
-    assert_equal 0.01, district.enrollment.participation_by_race_or_ethnicity_in_year(2010)
+    expected = {:native_american=>0.01, :asian=>0.01, :black=>0.01, :hispanic=>0.08, :pacific_islander=>0, :two_or_more=>0.04, :white=>0.86}
+    assert_equal expected, district.enrollment.participation_by_race_or_ethnicity_in_year(2010)
   end
 
   def test_it_can_find_races_and_dropout_rates
@@ -128,7 +136,8 @@ class EnrollmentTest < Minitest::Test
   def test_it_can_return_years_associated_with_race
     dr = DistrictRepository.from_json(data_dir)
     district = dr.find_by_name('WOODLAND PARK RE-2')
-    assert_equal '', district.enrollment.dropout_rate_for_race_or_ethnicity(:white)
+    expected = {2011=>0.013, 2012=>0.007}
+    assert_equal expected, district.enrollment.dropout_rate_for_race_or_ethnicity(:white)
   end
 
 end
