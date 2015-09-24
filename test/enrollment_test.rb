@@ -67,8 +67,6 @@ class EnrollmentTest < Minitest::Test
   def test_it_can_find_races_and_dropout_rates
     dr = DistrictRepository.from_json(data_dir)
     district = dr.find_by_name('WOODLAND PARK RE-2')
-    expected = 
-
   end
 
   def test_it_can_find_special_education_by_year

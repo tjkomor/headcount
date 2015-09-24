@@ -18,7 +18,7 @@ class EconomicProfile
     @data.fetch(:school_aged_children_in_poverty_by_year)
   end
 
-  def school_aged_children_in_poverty_by_year(year)
+  def school_aged_children_in_poverty_in_year(year)
     poverty = school_aged_children_in_poverty
     poverty.fetch(year.to_s.to_sym)
   end
