@@ -3,7 +3,7 @@ require_relative 'statewide_testing'
 require_relative 'economic_profile'
 
 class District
-  attr_accessor :enrollment, :statewide_testing, :economic_profile
+  attr_accessor :enrollment, :statewide_testing, :economic_profile, :name
 
   def initialize(name, data)
     @name = name
@@ -14,10 +14,10 @@ class District
   end
 
   def name
-    if @name.respond_to?(:to_s)
-      @name = @name.to_s.upcase
-    else
+    if @name.class == String
       @name = @name
+    else
+      @name = @name.to_s.upcase
     end
   end
 end

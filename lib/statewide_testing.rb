@@ -17,7 +17,7 @@ class StatewideTesting
 
   def proficient_by_grade(grade)
     data_by_year = @data.fetch(:by_subject_year_and_grade)
-    if grade == 3 || grade == 8
+    if (grade == 3) || (grade == 8)
       data_by_year = data_by_year.select { |k| k[:grade] == grade }
                                  .group_by { |data| data[:year] }
       @output = {}
@@ -36,14 +36,38 @@ class StatewideTesting
     end
   end
 
+  def error
+    raise UnknownDataError
+  end
+
   def proficient_for_subject_by_grade_in_year(subject, grade, year)
     data_by_grade = proficient_by_grade(grade)
-    value_year = data_by_grade.fetch(year)
-    value_year.fetch(subject)
+    if !subject?(subject)
+      raise UnknownDataError
+    else
+      value_year = data_by_grade.fetch(year, @unknown)
+      value_year.fetch(subject, @unknown)
+    end
+  end
+
+  def unknown
+    raise UnknownDataError
+  end
+
+  def subject?(subject)
+    if subject == :reading
+      true
+    elsif subject == :math
+      true
+    elsif subject == :writing
+      true
+    else
+      raise UnknownDataError
+    end
   end
 
   def proficient_for_subject_in_year(subject, year)
-    if subject == :reading || subject == :math || subject == :reading
+    if subject?(subject)
       three = proficient_by_grade(3)
       eight = proficient_by_grade(8)
       third = three.fetch(year)
@@ -61,7 +85,7 @@ class StatewideTesting
       results = Hash.new
       data_by_race = @data.fetch(:by_subject_year_and_race)
                           .select { |k| k[:race] == race }
-    if data_by_race.nil? == false
+    if !data_by_race.empty?
       find_subject_by_race(data_by_race)
       format_race_and_ethnicity_hash(data_by_race, results)
     else

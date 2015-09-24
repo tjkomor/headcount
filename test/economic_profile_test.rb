@@ -71,7 +71,7 @@ class EconomicProfileTest < Minitest::Test
   def test_it_can_find_school_aged_children_in_poverty_in_a_year
     dr = DistrictRepository.from_json(data_dir)
     district = dr.find_by_name('WOODLAND PARK RE-2')
-    assert_equal 0.124, district.economic_profile.school_aged_children_in_poverty_in_year(2011)
+    assert_equal 0.124, district.economic_profile.school_aged_children_in_poverty_by_year(2011)
   end
 
   def test_it_can_find_title_1_students_by_year
