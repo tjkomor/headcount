@@ -12,11 +12,12 @@ class DistrictLoader
   end
 
   def parse_enrollment_data
-    parse_graduaton_rate_by_year
+    parse_graduation_rate_by_year
     parse_kindergarten_graduation_by_year
     parse_participation_by_year
     parse_online_participation_by_year
     parse_special_education_by_year
+    parse_remediation_by_year
   end
 
   def parse_economic_profile_data
@@ -60,6 +61,14 @@ class DistrictLoader
     @data = @data.map { |district_name, district_data|
       enrollment = district_data[:enrollment]
       enrollment[:special_education_by_year] = enrollment[:special_education_by_year].map { |key, value| [key.to_s.to_i, value] }.to_h
+      [district_name, district_data]
+    }.to_h
+  end
+
+  def parse_remediation_by_year
+    @data = @data.map { |district_name, district_data|
+      enrollment = district_data[:enrollment]
+      enrollment[:remediation_by_year] = enrollment[:remediation_by_year].map { |key, value| [key.to_s.to_i, value] }.to_h
       [district_name, district_data]
     }.to_h
   end
