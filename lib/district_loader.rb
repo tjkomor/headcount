@@ -24,10 +24,10 @@ class DistrictLoader
     parse_free_or_reduced_lunch_by_year
   end
 
-  def parse_graduaton_rate_by_year
+  def parse_graduation_rate_by_year
     @data = @data.map { |district_name, district_data|
       enrollment = district_data[:enrollment]
-      enrollment[:graduation_rate_by_year] = enrollment[:graduation_rate_by_year].map {|key, value| [key.to_s.to_i, value]  }.to_h
+      enrollment[:graduation_rate_by_year] = enrollment[:graduation_rate_by_year].map { |key, value| [key.to_s.to_i, value] }.to_h
       [district_name, district_data]
     }.to_h
   end
@@ -35,7 +35,7 @@ class DistrictLoader
   def parse_kindergarten_graduation_by_year
     @data = @data.map { |district_name, district_data|
       enrollment = district_data[:enrollment]
-      enrollment[:kindergarten_participation_by_year] = enrollment[:kindergarten_participation_by_year].map {|key, value| [key.to_s.to_i, value]  }.to_h
+      enrollment[:kindergarten_participation_by_year] = enrollment[:kindergarten_participation_by_year].map { |key, value| [key.to_s.to_i, value] }.to_h
       [district_name, district_data]
     }.to_h
   end
@@ -43,7 +43,7 @@ class DistrictLoader
   def parse_participation_by_year
     @data = @data.map { |district_name, district_data|
       enrollment = district_data[:enrollment]
-      enrollment[:participation_by_year] = enrollment[:participation_by_year].map {|key, value| [key.to_s.to_i, value]  }.to_h
+      enrollment[:participation_by_year] = enrollment[:participation_by_year].map { |key, value| [key.to_s.to_i, value] }.to_h
       [district_name, district_data]
     }.to_h
   end
@@ -51,7 +51,7 @@ class DistrictLoader
   def parse_online_participation_by_year
     @data = @data.map { |district_name, district_data|
       enrollment = district_data[:enrollment]
-      enrollment[:online_participation_by_year] = enrollment[:online_participation_by_year].map {|key, value| [key.to_s.to_i, value]  }.to_h
+      enrollment[:online_participation_by_year] = enrollment[:online_participation_by_year].map { |key, value| [key.to_s.to_i, value] }.to_h
       [district_name, district_data]
     }.to_h
   end
@@ -59,7 +59,7 @@ class DistrictLoader
   def parse_special_education_by_year
     @data = @data.map { |district_name, district_data|
       enrollment = district_data[:enrollment]
-      enrollment[:special_education_by_year] = enrollment[:special_education_by_year].map {|key, value| [key.to_s.to_i, value]  }.to_h
+      enrollment[:special_education_by_year] = enrollment[:special_education_by_year].map { |key, value| [key.to_s.to_i, value] }.to_h
       [district_name, district_data]
     }.to_h
   end
@@ -67,7 +67,7 @@ class DistrictLoader
   def parse_title_1_students_by_year
     @data = @data.map { |district_name, district_data|
       economic_profile = district_data[:economic_profile]
-      economic_profile[:title_1_students_by_year] = economic_profile[:title_1_students_by_year].map {|key, value| [key.to_s.to_i, value]  }.to_h
+      economic_profile[:title_1_students_by_year] = economic_profile[:title_1_students_by_year].map { |key, value| [key.to_s.to_i, value] }.to_h
       [district_name, district_data]
     }.to_h
   end
