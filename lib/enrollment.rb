@@ -24,7 +24,7 @@ class Enrollment
   end
 
   def kindergarten_participation_in_year(year)
-    kindergarten_participation_by_year.fetch(year.to_s.to_sym)
+    kindergarten_participation_by_year.fetch(year, nil)
   end
 
   def dropout_rate_in_year(year)
@@ -32,10 +32,13 @@ class Enrollment
     dropout.each do |blk|
       if (blk[:year] == year) && (blk[:category] == 'all')
           return blk[:rate]
-        else
-          nil
       end
     end
+    nil
+  end
+
+  def dropout_rate_by_gender_in_year(year)
+    
   end
 
   def online_participation_by_year
@@ -45,7 +48,7 @@ class Enrollment
 
   def online_participation_in_year(year)
     participation = @data[:online_participation_by_year]
-    participation.fetch(year.to_s.to_sym)
+    participation.fetch(year.to_s.to_sym, nil)
   end
 
   def participation_by_race_or_ethnicity(race)
@@ -66,7 +69,16 @@ class Enrollment
   end
 
   def participation_by_race_or_ethnicity_in_year(year)
-    participation_by_race_or_ethnicity.fetch(year)
+    races = []
+    rates = []
+    data = @data[:participation_by_race_and_year]
+      data.each do |hash|
+        if hash[:year] == year
+          races << hash[:race].to_sym
+          rates << hash[:rate]
+        end
+      end
+      races.zip(rates).to_h
   end
 
   def special_education_by_year
@@ -75,7 +87,7 @@ class Enrollment
   end
 
   def special_education_in_year(year)
-    special_education_by_year.fetch(year.to_s.to_sym)
+    special_education_by_year.fetch(year, nil)
   end
 
   def remediation_by_year
@@ -84,7 +96,7 @@ class Enrollment
   end
 
   def remediation_in_year(year)
-    remediation_by_year.fetch(year.to_s.to_sym)
+    remediation_by_year.fetch(year, nil)
   end
 
 end
