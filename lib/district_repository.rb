@@ -2,7 +2,7 @@ require_relative 'district_loader'
 require_relative 'district'
 
 class DistrictRepository
-  attr_accessor :loader, :data, :enrollment, :districts
+  attr_accessor :loader, :data, :enrollment, :districts, :name, :matching_results
   def initialize(data)
     @data = data
     @districts = data.map {|name, district_data| [name.upcase, District.new(name, district_data)] }.to_h
@@ -22,13 +22,13 @@ class DistrictRepository
   end
 
   def find_all_matching(name)
-    a = []
+    @matching_results = []
     name = name.upcase.to_sym
     @districts.each do |district_name, district_data|
        if district_name.to_s.include?(name.to_s)
-         a << district_data
+         @matching_results << district_data
        end
     end
-    a
+    @matching_results
   end
 end

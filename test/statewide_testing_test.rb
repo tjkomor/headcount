@@ -55,7 +55,7 @@ class StatewideTestingTest < Minitest::Test
   def test_it_can_find_proficiency_for_subject_in_a_year
     dr = DistrictRepository.from_json(data_dir)
     district = dr.find_by_name('ACADEMY 20')
-    assert_equal 0.736, district.statewide_testing.proficient_for_subject_in_year(:math, 2011)
+    assert_equal 0.68, district.statewide_testing.proficient_for_subject_in_year(:math, 2011)
   end
 
   def test_it_can_find_subject_by_race_in_year

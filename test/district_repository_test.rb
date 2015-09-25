@@ -17,6 +17,6 @@ class DistrictRepositoryTest < Minitest::Test
  def test_it_can_find_all_matching
    dr = DistrictRepository.from_json(data_dir)
    district = dr.find_all_matching("oRa")
-   assert_equal ["COLORADO", "COLORADO SPRINGS 11"], district
+   assert_equal "COLORADO", district.first.name
  end
 end
