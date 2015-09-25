@@ -24,7 +24,7 @@ class DistrictRepository
   def find_all_matching(name)
     a = []
     name = name.upcase.to_sym
-    @districts.select do |district_name, district_data|
+    @districts.each do |district_name, district_data|
        if district_name.to_s.include?(name.to_s)
          a << district_data
        end

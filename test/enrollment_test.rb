@@ -1,6 +1,8 @@
 require './lib/enrollment.rb'
 require './lib/district_repository'
 require './lib/district'
+require './lib/custom_errors'
+include Errors
 
 class EnrollmentTest < Minitest::Test
 

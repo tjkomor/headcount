@@ -8,19 +8,6 @@ class StatewideTesting
     @data = data.fetch(:statewide_testing)
   end
 
-  def known_races
-    [:white, :asian, :black, :hispanic, :two_or_more, :pacific_islander, :native_american,
-      :all_students, :female_students, :male_students]
-  end
-
-  def known_subjects
-    [:math, :writing, :reading]
-  end
-
-  def known_years
-    [2011,2012,2013,2014]
-  end
-
   def proficient_by_grade(grade)
     data_by_year = @data.fetch(:by_subject_year_and_grade)
     if (grade == 3) || (grade == 8)
@@ -59,28 +46,12 @@ class StatewideTesting
     end
   end
 
-  def unknown
-    raise UnknownDataError
-  end
-
-  def subject?(subject)
-    if subject == :reading
-      true
-    elsif subject == :math
-      true
-    elsif subject == :writing
-      true
-    else
-      raise UnknownDataError
-    end
-  end
-
   def proficient_for_subject_in_year(subject, year)
     if known_subjects.include?(subject)
       data_by_race = @data.fetch(:by_subject_year_and_race)
-      .select { |k| k[:race] == "all" }
-      .select { |k| k[:subject] == subject.to_s}
-      .select { |k| k[:year] == year}
+                          .select { |k| k[:race] == "all" }
+                          .select { |k| k[:subject] == subject.to_s}
+                          .select { |k| k[:year] == year}
       if data_by_race.empty?
         raise UnknownDataError
       else
@@ -130,8 +101,8 @@ class StatewideTesting
   def proficient_for_subject_by_race_in_year(subject, race, year)
     if valid?(subject, race, year)
       data_by_race = proficient_by_race_or_ethnicity(race)
-        data_by_race[year][subject]
-      end
+      data_by_race[year][subject]
+    end
   end
 
   def valid?(subject, race, year)
@@ -140,5 +111,18 @@ class StatewideTesting
     else
       raise UnknownDataError
     end
+  end
+
+  def known_races
+    [:white, :asian, :black, :hispanic, :two_or_more, :pacific_islander, :native_american,
+      :all_students, :female_students, :male_students]
+  end
+
+  def known_subjects
+    [:math, :writing, :reading]
+  end
+
+  def known_years
+    [2011,2012,2013,2014]
   end
 end
